@@ -27,11 +27,14 @@ def readInputs(commandl):
     if(numbits == 0):
         print("you have to include a keylength")
         exit(1)
+    
     return pname, sname, numbits
 
 def main():
     pname, sname, numbits = readInputs(sys.argv[1:])
-    
+
     print('public key is "', pname)
     print('secret key is "', sname)
     print('numbits is "', numbits)
+
+main()
