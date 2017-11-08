@@ -1,12 +1,12 @@
 #this file creates a valid RSA public key / private key pair and stores them in files
 
 import sys, getopt
-
+import random
 
 def readInputs(commandl):
     pname = ''
     sname = ''
-    numbits = 0
+    numbits =0
     try:
         opts, args = getopt.getopt(commandl, "p:s:n:", ["pfile=", "sfile =", "numbits="])
     except getopt.GetoptError:
@@ -30,11 +30,21 @@ def readInputs(commandl):
     
     return pname, sname, numbits
 
+def makePrime(numbits):
+     bits = random.getrandbits(numbits-1)
+     #bits.append('1')
+     a = BitArray(bits)
+     a.append('0b1')
+     print('bits is ' + a)
+     return bits
 def main():
     pname, sname, numbits = readInputs(sys.argv[1:])
 
     print('public key is "', pname)
     print('secret key is "', sname)
     print('numbits is "', numbits)
+    
+    b = makePrime(int(numbits))
+
 
 main()
