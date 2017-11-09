@@ -2,7 +2,7 @@
 
 import sys, getopt
 import random
-
+from math import gcd
 def readInputs(commandl):
     pname = ''
     sname = ''
@@ -90,7 +90,27 @@ def main():
     print('secret key is "', sname)
     print('numbits is "', numbits)
     
-    b = makePrime(int(numbits))
-    print(b)
-
+    p = makePrime(int(numbits))
+    q = makePrime(int(numbits))
+    N = (p-1) * (q-1)
+    e = 0
+    if gcd(N,7) ==1:
+        e = 7
+    elif gcd(N, 11) ==1:
+        e =11
+    elif gcd(N, 13) ==1:
+        e=13
+    else:
+        print("unlucky N value")
+    #need to compute e*d = 1 % N
+    # d = e^-1 mod N
+    d = pow(e, -1)
+    d = d % N
+    f = (d * e) % N
+    print("f is " + str(f))
+    print("p is " +str(p))
+    print("q is " +str(q))
+    print("e is " +str(e))
+    print("d is " +str(d))
+    print("N is " +str(N))
 main()
