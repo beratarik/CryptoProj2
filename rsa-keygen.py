@@ -72,28 +72,63 @@ def compositeTest(bits, d, count, rand):
 def makePrime(numbits):
     checkprime = 0
     k = 10
+    idk = "1"
+    #print("numbits is "+ str(numbits))
+    numbits = numbits -2
     while(checkprime == 0):
         bits = random.getrandbits(numbits)
+        #print("bits as int is")
+        #print(bits)
+        bits = '{0:b}'.format(bits)
+        while(len(bits) != numbits):
+            bits = "0"+bits
+        #print("bits as bin is ")
+        #print(bits)
+        bits = idk+bits+idk
+        #print(bits)
         #trying to set last bit to 1, but im bad
        # bits = bitarray(bits)
        # print(bits)
        # bits = str(bits)+ str("1")
-        #bits = int(bits)
+        bits = int(bits,2)
         checkprime = isPrime(bits, k)
 
     print('bits is ' + str(bits))
     return bits
+
+def mulinv(e,N):
+    g,x, q = egcd(e,N)
+    if g!=1:
+        print("modular inverse failure")
+    else:
+        return x % N
+
+def egcd(a,b):
+    if a == 0:
+        return (b,0,1)
+    else:
+        g, y, x = egcd(b%a,a)
+        return (g, x-(b//a)* y,y)
+
 def main():
     pname, sname, numbits = readInputs(sys.argv[1:])
 
     print('public key is "', pname)
     print('secret key is "', sname)
-    print('numbits is "', numbits)
+    #print('numbits is "', numbits)
     
     pfile = open(pname,'w')
     sfile = open(sname,'w')
-    p = makePrime(int(numbits))
-    q = makePrime(int(numbits))
+    numbits = int(numbits)
+    #numbits = numbits+2
+    #print("numbits is" + str(numbits))
+    p = makePrime(int(numbits/2))
+    #print("numbits is" + str(numbits))
+    
+    q = makePrime(int(numbits/2))
+    smalln = p*q
+    print("smalln is " + str(smalln))
+    #print("length of small n is" + str(len(str(smalln))))
     N = (p-1) * (q-1)
     e = 0
     if gcd(N,7) ==1:
@@ -106,20 +141,22 @@ def main():
         print("unlucky N value")
     #need to compute e*d = 1 % N
     # d = e^-1 mod N
-    d = pow(e, -1)
-    d = d % N
-    f = (d * e) % N
-    print("f is " + str(f))
+    ##d = pow(e, -1)
+    ##d = d % N
+    #f = (d * e) % N
+    d = mulinv(e, N)
+    numbits = str(numbits)
+    #print("f is " + str(f))
     print("p is " +str(p))
     print("q is " +str(q))
     print("e is " +str(e))
     print("d is " +str(d))
     print("N is " +str(N))
     pfile.write(numbits+"\n")
-    pfile.write(str(N)+"\n")
+    pfile.write(str(smalln)+"\n")
     pfile.write(str(e)+"\n")
     sfile.write(numbits+"\n")
-    sfile.write(str(N)+"\n")
+    sfile.write(str(smalln)+"\n")
     sfile.write(str(d)+"\n")
     pfile.close()
     sfile.close()
