@@ -1,15 +1,16 @@
 #this is the encryption padding function
 import os
+
 def paddingFunc(message, length):
     #should return 00 02 Rand 00 message
 
     mlength = len(message)
-    if mlength > (length-11):
-        print("not enough space for padding")
-        return 1
+    ##if mlength > (length-11):
+     ##   print("not enough space for padding")
+      ##  return 1
     
     padded = b''
-    padlength = length -11 -mlength -3
+    padlength = length-3
 
     while len(padded) < padlength:
         left = padlength - len(padded)
@@ -31,7 +32,7 @@ def main():
     message = str(9234532)
     padded = paddingFunc(message, 256)
     print(padded)
-
+    
 
 
 
