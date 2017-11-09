@@ -30,13 +30,59 @@ def readInputs(commandl):
     
     return pname, sname, numbits
 
+#this is the function that implement miller rabin prime testing
+def isPrime(bits, k):
+    
+    #k is the correctness factor
+    if bits % 2 == 0:
+        return 0
+    
+    #try to divide n-1 by 2 a bunch of times
+    d =bits-1
+    count = 0
+    
+    while True:
+        quotient, remainder = divmod(d,2)
+        
+        if remainder ==1:
+            break
+        
+        count += 1
+        d = quotient
+    
+    for i in range (k):
+        rand = random.randrange(2,bits)
+        if compositeTest(bits, d, count,rand):
+                return 0
+    
+    return 1
+
+#this function tests for composites
+def compositeTest(bits, d, count, rand):
+    if pow(rand, d , bits)==1:
+        return 0
+    
+    for i in range(count):
+        if pow(rand, 2**i * d, bits)== bits-1:
+            return 0
+    
+    return 1
+
+#this is the function that gets random bits and then sends it to isPrime to see 
 def makePrime(numbits):
-     bits = random.getrandbits(numbits-1)
-     #bits.append('1')
-     a = BitArray(bits)
-     a.append('0b1')
-     print('bits is ' + a)
-     return bits
+    checkprime = 0
+    k = 10
+    while(checkprime == 0):
+        bits = random.getrandbits(numbits)
+        #trying to set last bit to 1, but im bad
+       # bits = bitarray(bits)
+       # print(bits)
+       # bits = str(bits)+ str("1")
+        #bits = int(bits)
+        checkprime = isPrime(bits, k)
+
+    print('bits is ' + str(bits))
+    return bits
 def main():
     pname, sname, numbits = readInputs(sys.argv[1:])
 
@@ -45,6 +91,6 @@ def main():
     print('numbits is "', numbits)
     
     b = makePrime(int(numbits))
-
+    print(b)
 
 main()
