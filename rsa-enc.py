@@ -32,7 +32,14 @@ def readInputs(commandl):
     
     return kname, iname, oname
 
-
+def modexp(mess, e, n):
+    count = 1
+    while e:
+        if e & 1:
+            count = count * mess % n
+        e >>= 1
+        mess = mess * mess % n
+    return count
 def main():
     kname, iname, oname = readInputs(sys.argv[1:])
 
@@ -53,8 +60,9 @@ def main():
         quit(1)
     else:
         int_mess = int.from_bytes(paddedmessage, byteorder='big')
-        print(math.pow(int_mess, e) % n)
-
+        #print(math.pow(int_mess, e) % n)
+        Exp = modexp(int_mess, e, n)
+        print(Exp)
     
         #print(n)
         #print(e)
