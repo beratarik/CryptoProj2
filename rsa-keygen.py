@@ -93,13 +93,14 @@ def makePrime(numbits):
         bits = int(bits,2)
         checkprime = isPrime(bits, k)
 
-    print('bits is ' + str(bits))
+    #print('bits is ' + str(bits))
     return bits
 
 def mulinv(e,N):
     g,x, q = egcd(e,N)
     if g!=1:
         print("modular inverse failure")
+        exit(1)
     else:
         return x % N
 
@@ -113,8 +114,6 @@ def egcd(a,b):
 def main():
     pname, sname, numbits = readInputs(sys.argv[1:])
 
-    print('public key is "', pname)
-    print('secret key is "', sname)
     #print('numbits is "', numbits)
     
     pfile = open(pname,'w')
@@ -127,7 +126,9 @@ def main():
     
     q = makePrime(int(numbits/2))
     smalln = p*q
-    print("smalln is " + str(smalln))
+
+    #print("smalln is " + str(smalln))
+
     #print("length of small n is" + str(len(str(smalln))))
     N = (p-1) * (q-1)
     e = 0
@@ -151,11 +152,13 @@ def main():
     d = mulinv(e, N)
     numbits = str(numbits)
     #print("f is " + str(f))
-    print("p is " +str(p))
-    print("q is " +str(q))
-    print("e is " +str(e))
-    print("d is " +str(d))
-    print("N is " +str(N))
+
+    #print("p is " +str(p))
+    #print("q is " +str(q))
+    #print("e is " +str(e))
+    #print("d is " +str(d))
+    #print("N is " +str(N))
+
     pfile.write(numbits+"\n")
     pfile.write(str(smalln)+"\n")
     pfile.write(str(e)+"\n")

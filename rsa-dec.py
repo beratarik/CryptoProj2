@@ -31,11 +31,43 @@ def readInputs(commandl):
     
     return kname, iname, oname
 
+def modexp(cipher, d, n):
+    count = 1
+    while d:
+        if d & 1:
+            count = count * cipher % n
+        d >>= 1
+        cipher = cipher * cipher % n
+    return count
+    #print(count)
+
+def getMess(int_mess):
+    padded_mess = int(int_mess).to_bytes(len(str(int_mess)), byteorder='big')
+    reverse_mess = padded_mess[::-1]
+    plaintext = ''
+    for i in range(len(reverse_mess)):
+        cur_char = chr(reverse_mess[i])
+        plaintext += cur_char
+        if(cur_char == '\x00'):
+            break
+    return(plaintext)
+
 def main():
     kname, iname, oname = readInputs(sys.argv[1:])
 
-    print('key file is "', kname)
-    print('input file is "', iname)
-    print('output file is "', oname)
+    k = open(kname, 'r')
+    i = open(iname, 'r')
+    o = open(oname, 'w')
+
+    numbits = int(k.readline().rstrip())
+    n = int(k.readline().rstrip())
+    d = int(k.readline().rstrip())
+    cipher = int(i.read().rstrip())
+
+    int_mess = modexp(cipher, d, n)
+    plaintext = getMess(int_mess)[::-1]
+    #print(plaintext[1:])
+
+    o.write(plaintext[1:])
 
 main()

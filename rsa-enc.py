@@ -39,13 +39,11 @@ def modexp(mess, e, n):
             count = count * mess % n
         e >>= 1
         mess = mess * mess % n
+    #print(count)
     return count
+
 def main():
     kname, iname, oname = readInputs(sys.argv[1:])
-
-    #print('key file is: ' + kname)
-    #print('input file is: ' + iname)
-    #print('output file is: ' + oname)
 
     k = open(kname, 'r')
     i = open(iname, 'r')
@@ -54,19 +52,18 @@ def main():
     numbits = int(k.readline().rstrip())
     n = int(k.readline().rstrip())
     e = int(k.readline().rstrip())
-    message = i.read()
+    message = i.read().rstrip()
     paddedmessage = paddingFunc(message, int(numbits/2))
+    #print(paddedmessage)
     if(paddedmessage == 1):
         quit(1)
     else:
         int_mess = int.from_bytes(paddedmessage, byteorder='big')
-        #print(math.pow(int_mess, e) % n)
+        #print("int mess:", int_mess)
+        #print("int mess % n:", int_mess % n)
         Exp = modexp(int_mess, e, n)
 
     o.write(str(Exp))
     
-        #print(n)
-        #print(e)
-    #print(math.pow(paddedoutput, e))
 
 main()
