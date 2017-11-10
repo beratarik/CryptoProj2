@@ -47,9 +47,9 @@ def main():
     #print('input file is: ' + iname)
     #print('output file is: ' + oname)
 
-    k = open(kname)
-    i = open(iname)
-    o = open(oname)
+    k = open(kname, 'r')
+    i = open(iname, 'r')
+    o = open(oname, 'w')
 
     numbits = int(k.readline().rstrip())
     n = int(k.readline().rstrip())
@@ -62,7 +62,8 @@ def main():
         int_mess = int.from_bytes(paddedmessage, byteorder='big')
         #print(math.pow(int_mess, e) % n)
         Exp = modexp(int_mess, e, n)
-        print(Exp)
+
+    o.write(str(Exp))
     
         #print(n)
         #print(e)
