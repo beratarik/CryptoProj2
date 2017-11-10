@@ -131,7 +131,11 @@ def main():
     #print("length of small n is" + str(len(str(smalln))))
     N = (p-1) * (q-1)
     e = 0
-    if gcd(N,7) ==1:
+    if gcd(N,3) ==1:
+        e = 3
+    elif gcd(N,5) ==1:
+        e = 5
+    elif gcd(N,7) ==1:
         e = 7
     elif gcd(N, 11) ==1:
         e =11
